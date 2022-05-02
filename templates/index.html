@@ -1,0 +1,149 @@
+{% extends 'html_base.html' %} 
+{% include 'header.html' %}
+
+{% block begin_title %}SISTEMA CRUD{% endblock %}
+
+
+
+{% block begin_body %}
+    <div class="container">
+        <div class="row">
+
+            <div class="col md-12">
+                <div class="jumbotron p-2">
+                    <h2>Tabela de Vendas</b>
+                    <button type="button" class="btn btn-success float-right" id="add_sales" 
+                        data-toggle="modal" data-target="#screen_modal">Nova Venda</button>
+                    </h2>
+
+                    <table class="table table-hover", id="sales_table">
+                        <thead class="thead-dark">
+                            <tr>
+                                <th>ID</th>
+                                <th>DATA</th>
+                                <th>HORA</h>
+                                <th>STATUS</th>
+                                <th>VALOR</th>
+                                <th>Excluir/Editar</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for row in employees %}
+                            <tr>
+                                <td>{{row.id}}</td>
+                                <td>{{row.date}}</td>
+                                <td>{{row.hour}}</td>
+                                <td>{{row.status}}</td>
+                                <td>{{row.value}}</td>
+                                <td>
+                                    <a href="/update_sale/{{row.id}}" type="button" class="btn btn-secondary btn-sm" data-toggle="modal", data-target="#modaledit{{row.id}}">Editar</button>
+                                    <a href="/delete_sale/{{row.id}}" type="button" class="btn btn-secondary btn-sm" onclick="return confirm('Você tem certeza que deseja excluir?')">Excluir</button>
+                                </td>
+                            </tr>
+                        </tbody>
+
+                        <!-- MODAL DE EDIÇÃO DA VENDA--> 
+                        <div id="modaledit{{row.id}}" class="modal fade" role="dialog">
+                            <div class="modal-dialog">
+                               <div class="modal-content">
+                                  <div class="modal-header">
+                          
+                                     <h4 class="modal-title">Editar Venda</h4>
+                                  </div>
+                                  <div class="modal-body">
+                          
+                                     <form action="{{url_for("update_sale")}}" method="POST">
+                                        <div class="form-group">
+                                           <label>DATA</label>
+                                           <input type="hidden" name="id" value="{{row.id}}">
+                                           <input type="text" class="form-control" name="sale_date" value="{{row.date}}" required="1">
+                                        </div>
+                          
+                                         <div class="form-group">
+                                           <label>Hora:</label>
+                                           <input type="text" class="form-control" name="sale_hour" value="{{row.hour}}" required="1">
+                                        </div>
+                          
+                                         <div class="form-group">
+                                           <label>STATUS:</label>
+                                           <input type="text" class="form-control" name="sale_status" value="{{row.status}}" required="1">
+                                        </div>
+        
+                                        <div class="form-group">
+                                            <label>VALOR:</label>
+                                            <input type="number" class="form-control" name="sale_value" value="{{row.value}}" required="1">
+                                         </div>
+                           
+                          
+                                        <div class="form-group">
+                                           <button class="btn btn-primary" type="submit">Editar</button>
+                                        </div>
+                          
+                                     </form>
+                          
+                                  </div>
+                
+                                  <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
+                          
+                                  </div>
+                               </div>
+                            </div>
+                        </div>
+                        {% endfor %}
+                        <!-- FIM DO MODAL DE EDIÇÃO-->
+                    </table>
+                </div>
+                <!-- MODAL PARA ADICIONAR VENDA -->
+                <div id="screen_modal" class="modal fade" role="dialog">
+                    <div class="modal-dialog">
+                       <div class="modal-content">
+                          <div class="modal-header">
+                  
+                             <h4 class="modal-title">Venda</h4>
+                          </div>
+                          <div class="modal-body">
+                  
+                             <form action="{{url_for("insert_data")}}" method="POST">
+                                <div class="form-group">
+                                   <label>DATA</label>
+                                   <input type="text" class="form-control" name="sale_date" required="1">
+                                </div>
+                  
+                                 <div class="form-group">
+                                   <label>Hora:</label>
+                                   <input type="text" class="form-control" name="sale_hour" required="1">
+                                </div>
+                  
+                                 <div class="form-group">
+                                   <label>STATUS:</label>
+                                   <input type="text" class="form-control" name="sale_status" required="1">
+                                </div>
+
+                                <div class="form-group">
+                                    <label>VALOR:</label>
+                                    <input type="number" class="form-control" name="sale_value" required="1">
+                                 </div>
+                   
+                  
+                                <div class="form-group">
+                                   <button class="btn btn-primary" type="submit">Adicionar</button>
+                                </div>
+                  
+                             </form>
+                  
+                          </div>
+        
+                          <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
+                  
+                          </div>
+                       </div>
+                    </div>
+                </div>
+                <!-- FIM DO MODAL PARA ADICIONAR VENDA-->
+            </div>
+        </div>
+    </div>
+    
+{% endblock %}
